@@ -34,7 +34,7 @@ class Home(View):
         if forecast_days < 0:
             messages.error(req, "Forecast Cannot be Negative")
         UserActivity.objects.create(user=req.user, forecast_days=forecast_days, stock_symbol=user_input, model_name=model_name)
-        self.predicted = model(forecast_days, user_input, algo[model_name])[0]
+        self.predicted = model(forecast_days, user_input, algo[model_name])
         df = load_ds()
         symbol, name = list(df['Symbol']), list(df['Name'])
         stock_info = load_stock(user_input)
@@ -44,7 +44,7 @@ class Home(View):
             'default': {'symbol': symbol[0], 'name': name[0]},
             'predicted': self.predicted,
             'stock_info': zip(open[:50], adj[:50]),
-            'open_list': open[:200],
-            'adj_list': adj[:200],
+            'open_list': open,
+            'adj_list': adj,
         }
         return render(req, self.template_name, context)

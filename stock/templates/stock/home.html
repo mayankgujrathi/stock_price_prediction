@@ -31,10 +31,10 @@
   <button class="btn btn-primary" type="submit">Predict</button>
   <br>
   <br>
-  {% if predicted %}
   <h3>Predicted Value</h3>
-  <p>{{predicted}}</p>
-  {% endif %}
+  {% for pred in predicted %}
+  <p>{{pred}}</p>
+  {% endfor %}
   {% if stock_info %}
   <canvas id="stock_graph" style="width:100%;max-width:700px"></canvas>
   <script defer>

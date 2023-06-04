@@ -11,7 +11,7 @@ def load_ds():
     return pd.read_csv('./data/stockNames.csv', usecols=['Symbol', 'Name'])
 
 def load_stock(user_input: str):
-    stock_info = yf.download(user_input, start='2000-01-01', end=f'{date.today()}', progress=False)
+    stock_info = yf.download(user_input, start='2023-01-01', end=f'{date.today()}', progress=False)
     stock_info.drop('Volume', axis = 1, inplace = True)
     stock_info.index = pd.to_datetime(stock_info.index).date
     stock_info.sort_index(inplace=True, ascending=False)
@@ -40,7 +40,7 @@ def model(forecast_days: int, user_input: str, m: object):
     x_train, x_test, y_train, y_test = data_prep(forecast_days, user_input)
     m_fit = m.fit(x_train, y_train)
     stock_price_pred = np.array(stock.drop(columns='Stock Price', axis=1))[forecast_days:]
-    pred = m_fit.predict(stock_price_pred)
+    pred = m_fit.predict(stock_price_pred) # [[c1, c2.], []]
     return pred[:forecast_days]
 
 algo = {'svm': SVR(kernel='rbf', C = 1000.0, gamma = 0.0001), 'tree': RandomForestRegressor()}
